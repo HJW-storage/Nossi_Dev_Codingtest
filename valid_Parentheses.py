@@ -28,46 +28,75 @@ Constraints:
 s consists of parentheses only '()[]{}'.
 """
 
-# stack 이용
-def decision_valid(list_s, cnt1_left, cnt1_right, cnt2_left, cnt2_right, cnt3_left, cnt3_right):
-    n = len(list_s) # 문자열 길이
-    # print("문자열 길이 : {}".format(n))
+# # stack 이용
+# def decision_valid(list_s, cnt1_left, cnt1_right, cnt2_left, cnt2_right, cnt3_left, cnt3_right):
+#     n = len(list_s) # 문자열 길이
+#     # print("문자열 길이 : {}".format(n))
     
-    # 시간복잡도 O(n) / 문자열 리스트를 한번 훎으며 조사한다. 
-    for _ in range(n):
-        pop_s = list_s.pop()    # 스택에서 문자 꺼내기
+#     # 시간복잡도 O(n) / 문자열 리스트를 한번 훎으며 조사한다. 
+#     for _ in range(n):
+#         pop_s = list_s.pop()    # 스택에서 문자 꺼내기
         
-        # 소괄호( ), 중괄호{ }, 대괄호[ ] 개수를 세기 위한 cnt
-        if pop_s == '(': 
-            cnt1_left += 1
-        elif pop_s == ')': 
-            cnt1_right += 1
-        elif pop_s == '{': 
-            cnt2_left += 1
-        elif pop_s == '}': 
-            cnt2_right += 1    
-        elif pop_s == '[':
-            cnt3_left += 1
-        elif pop_s == ']':
-            cnt3_right += 1    
+#         # 소괄호( ), 중괄호{ }, 대괄호[ ] 개수를 세기 위한 cnt
+#         if pop_s == '(': 
+#             cnt1_left += 1
+#         elif pop_s == ')': 
+#             cnt1_right += 1
+#         elif pop_s == '{': 
+#             cnt2_left += 1
+#         elif pop_s == '}': 
+#             cnt2_right += 1    
+#         elif pop_s == '[':
+#             cnt3_left += 1
+#         elif pop_s == ']':
+#             cnt3_right += 1    
             
-        # 꺼낸 문자를 비교했을 때, 닫히는 괄호보다 (, {, [ 열리는 괄호가 먼저 나온 경우 바로 False 반환
-        if (cnt1_left > cnt1_right) or (cnt2_left > cnt2_right) or (cnt3_left > cnt3_right) :
-            print("문자열 조사중에 규칙을 어겼기에 이후 검사 없이 바로 종료합니다.")
+#         # 꺼낸 문자를 비교했을 때, 닫히는 괄호보다 (, {, [ 열리는 괄호가 먼저 나온 경우 바로 False 반환
+#         if (cnt1_left > cnt1_right) or (cnt2_left > cnt2_right) or (cnt3_left > cnt3_right) :
+#             print("문자열 조사중에 규칙을 어겼기에 이후 검사 없이 바로 종료합니다.")
+#             return False
+        
+#     # 입력 받은 문자열의 괄호 개수를 조사한다. 열림, 닫힘 괄호의 개수가 동일하면 True, 다르면 False
+#     if cnt1_left == cnt1_right and cnt2_left == cnt2_right and cnt3_left == cnt3_right :
+#         return True
+#     else:
+#         return False
+        
+
+
+# cnt1_left, cnt1_right, cnt2_left, cnt2_right, cnt3_left, cnt3_right = 0, 0, 0, 0, 0, 0  # 소괄호( ), 중괄호{ }, 대괄호[ ] 개수를 세기 위한 cnt 초기화 
+
+# # 문자열 입력 받기
+# s = list(input())
+# # print(s)
+# result = decision_valid(s, cnt1_left, cnt1_right, cnt2_left, cnt2_right, cnt3_left, cnt3_right)
+# print("valid_Parentheses 결과는 : {}".format(result))
+
+
+############################################### 모범 답안 ########################################################## 
+# 스택 이용
+def isValid(s):
+    stack = []
+    for p in s:
+        if p == "{":
+            stack.append("}")
+        elif p == "[":
+            stack.append("]")
+        elif p == "(":
+            stack.append(")")
+        elif stack and stack[-1] == p:  # stack and : 스택이 비어있지 않고  / stack[-1] : 스택에 가장 마지막에 들어온 원소 
+            stack.pop()
+        else:
             return False
-        
-    # 입력 받은 문자열의 괄호 개수를 조사한다. 열림, 닫힘 괄호의 개수가 동일하면 True, 다르면 False
-    if cnt1_left == cnt1_right and cnt2_left == cnt2_right and cnt3_left == cnt3_right :
-        return True
-    else:
-        return False
-        
 
-
-cnt1_left, cnt1_right, cnt2_left, cnt2_right, cnt3_left, cnt3_right = 0, 0, 0, 0, 0, 0  # 소괄호( ), 중괄호{ }, 대괄호[ ] 개수를 세기 위한 cnt 초기화 
+    # 모든 괄호를 처리 했다면 stack 은 비어있기에 not stack 시 True를 반환. 
+    # 만약 모든 괄호를 처리하지 못했다면 stack은 비어 있지 않기에 False를 반환한다.
+    return not stack    
 
 # 문자열 입력 받기
 s = list(input())
 # print(s)
-result = decision_valid(s, cnt1_left, cnt1_right, cnt2_left, cnt2_right, cnt3_left, cnt3_right)
+result = isValid(s)
 print("valid_Parentheses 결과는 : {}".format(result))
+
+############################################### 모범 답안 ########################################################## 
